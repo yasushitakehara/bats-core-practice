@@ -4,6 +4,10 @@ set -euo pipefail
 
 load ./calc.sh
 
+setup_file(){
+  echo "SETUP_FILE ONLY ONCE!" >&3
+}
+
 setup(){
   echo "SETUP" >&3
   aaa=333
@@ -11,6 +15,10 @@ setup(){
 
 teardown(){
   echo "TEARDOWN $aaa" >&3
+}
+
+teardown_file(){
+  echo "TEARDOWN_FILE ONLY ONCE!" >&3
 }
 
 @test "setup and teardown 1" {

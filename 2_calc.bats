@@ -4,15 +4,6 @@ set -euo pipefail
 
 load ./calc.sh
 
-#setup(){
-#  echo "SETUP"
-#  aaa=333
-#}
-
-#teardown(){
-#  echo "TEARDOWN $aaa" >&3
-#}
-
 @test "add OK" {
   result="$(add 8 1)"
   [ "$result" -eq 9 ]
@@ -25,10 +16,12 @@ load ./calc.sh
   [ "$status" -eq 0 ]
   [ "$output" -eq 9 ]
   [ "${lines[0]}" -eq 9 ]
+  [ "${#lines[@]}" -eq 1 ]
 }
 
 @test "how to see echo OK" {
-  echo "hello!" >&3
-  run greet "Hoge"
+  echo "This sentence is not printed due to missing >&3..."
+  echo "This sentence must be printed!" >&3
+  run greet "Bob"
   echo "$output" >&3
 }
