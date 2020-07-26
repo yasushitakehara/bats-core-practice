@@ -21,18 +21,20 @@ teardown() {
   assert_file_contains ./temp1.txt ^aaa$
 }
 
-@test "Be careful the current path!" {
-  result=$(echo_current_path)
-  echo "A) result => ${result}" >&3
-
-  run echo_current_path
-  echo "B) result => ${output}" >&3
-
-  echo "ls => $(ls ${output})" >&3
-
+@test "access a prepared file 1 (using relative path)" {
   assert_file_exist ./hoge.txt
-  #assert_file_exist "${result}/hoge.txt"
-  #echo "absolute ls $(ls ${result})" >&3
+}
 
-  # If your function access other files, you need to fix the current path.
+@test "access a prepared file 2 NG (using absolute path)" {
+
+  # reference - https://qiita.com/koara-local/items/2d67c0964188bba39e29
+  result=$(cd $(dirname $0); pwd)
+  echo "current path => ${result}" >&3
+  assert_file_exist "${result}/hoge.txt"
+}
+
+@test "access a prepared file 3 OK (using absolute path)" {
+  echo "BATS_TEST_DIRNAME => $BATS_TEST_DIRNAME" >&3
+  assert_file_exist "${BATS_TEST_DIRNAME}/hoge.txt"
+  assert_file_contains "${BATS_TEST_DIRNAME}/hoge.txt" ^abc123$
 }

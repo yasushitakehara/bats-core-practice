@@ -13,7 +13,3 @@ function add_with_variables(){
 function greet(){
     echo "Hello, $1 san!"
 }
-
-function echo_current_path(){
-    echo $(cd $(dirname $0); pwd)
-}
